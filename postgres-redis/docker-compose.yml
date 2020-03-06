@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  filebeat:
+    image: elastic/filebeat:7.6.0
+    restart: always
+    user: root 
+    volumes:
+            - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+            - /var/lib/docker:/var/lib/docker:ro
+            - /var/run/docker.sock:/var/run/docker.sock
+
+  metricbeat:
+    image: elastic/metricbeat:7.6.0
+    restart: always
+    user: root
+    volumes:
+      - ./config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    
+    # disable strict permission checks
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+
+
+
+  db:
+    image: postgres:9.6
+    container_name: postgres-db
+    restart: always
+    environment: 
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data    
+
+  redis:
+    restart: always
+    container_name: redis
+    image: redis:5.0
+    volumes:
+      - redis-data:/data
+
+volumes:
+  db-data:
+  redis-data:
