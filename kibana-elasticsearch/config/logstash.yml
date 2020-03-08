@@ -1,0 +1,21 @@
+input {
+  google_cloud_storage {
+    interval => 60
+    bucket_id => "actual-selling-price"
+    json_key_file => "/home/user/key.json" // ???
+    file_matches => ".*xml"
+    codec => "plain"
+  }
+}
+
+
+filter {
+  xml {
+    namespaces => {
+      "xsl" => "http://www.w3.org/1999/XSL/Transform"
+      "xhtml" => "http://www.w3.org/1999/xhtml"
+    }
+  }
+}
+
+output { stdout { codec => rubydebug } }
