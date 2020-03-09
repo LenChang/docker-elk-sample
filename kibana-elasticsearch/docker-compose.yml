@@ -17,6 +17,20 @@ services:
         ports:
             - "5601:5601"
 
+    metricbeat:
+        image: elastic/metricbeat:7.6.0
+        restart: always
+        user: root
+        volumes:
+            - ./config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+            - /proc:/hostfs/proc:ro
+            - /:/hostfs:ro
+                
+        # disable strict permission checks
+        command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+
 
 volumes:
     elasticsearch_data:
