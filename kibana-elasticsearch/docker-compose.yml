@@ -30,6 +30,20 @@ services:
                 
         # disable strict permission checks
         command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+        depends_on:
+            - elasticsearch
+            - kibana
+    
+    heartbeat:
+        image: elastic/heartbeat:7.6.0
+        restart: always
+        user: root
+        volumes:
+            - ./config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+        command: ["--strict.perms=false"]
+        depends_on:
+            - elasticsearch
+            - kibana
 
 
 volumes:

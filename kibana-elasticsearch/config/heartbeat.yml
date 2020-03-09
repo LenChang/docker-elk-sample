@@ -1,0 +1,6 @@
+heartbeat.monitors:
+- type: icmp
+  schedule: '*/5 * * * * * *'
+      hosts: ["www.yardian.com"]
+  output.elasticsearch:
+      hosts: ["${ELASTICSEARCH_HOST}:9200"]
