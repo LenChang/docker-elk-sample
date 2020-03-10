@@ -1,5 +1,5 @@
 output.elasticsearch.hosts: ["${ELASTICSEARCH_HOST}:9200"]
-  
+
 queue.mem.events: 4096
 
 max_procs: 4
@@ -7,3 +7,5 @@ max_procs: 4
 apm-server.kibana.enabled: true
 
 apm-server.kibana.host: "${KIBANA_HOST}:5601"
+
+apm-server.host: "0.0.0.0:8200"

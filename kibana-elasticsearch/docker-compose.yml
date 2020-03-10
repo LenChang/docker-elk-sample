@@ -51,7 +51,8 @@ services:
         volumes: 
             - ./config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
         command: ["--strict.perms=false"]
-
+        ports:
+            - "8200:8200"
 
 volumes:
     elasticsearch_data:
